@@ -18,7 +18,7 @@ MEDIUM = Pth_Profile(
 )
 
 LARGE = Pth_Profile(
-    'weights_notagenx_p_size_16_p_length_1024_p_layers_20_h_size_1280.pth',
+    'weights_notagen_pretrain_p_size_16_p_length_1024_p_layers_20_c_layers_6_h_size_1280_lr_0.0001_batch_4.pth',
     20, 6, 1280, 1024
 )
 
