@@ -55,6 +55,34 @@ class RealtimeStream(TextIOBase):
         self.queue.put(text)
         return len(text)
 
+def save_abc_xml_file(abc_filename: str, abc_content: str):
+    with open(abc_filename, "w", encoding="utf-8") as f:
+        f.write(abc_content)
+
+    try:
+        subprocess.run(
+            ["python", "abc2xml.py", '-o', '.', abc_filename,],
+            check=True,
+            capture_output=True,
+            text=True
+        )
+    except subprocess.CalledProcessError as e:
+        error_msg = f"Conversion failed: {e.stderr}" if e.stderr else "Unknown error"
+        raise gr.Error(f"ABC to XML conversion failed: {error_msg}. Please try to generate another composition.")
+
+def save_and_download(abc_content, period, composer, instrumentation):
+    if not all([period, composer, instrumentation]):
+        raise gr.Error("Please complete a valid generation first before saving")
+    
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    prompt_str = f"{period}_{composer}_{instrumentation}"
+    filename_base = f"{timestamp}_{prompt_str}"
+    
+    abc_filename = f"{filename_base}.abc"
+    xml_filename = f"{filename_base}.xml"
+    save_abc_xml_file(abc_filename, abc_content)
+
+    return f"Downloading {xml_filename}", xml_filename
 
 def save_and_convert(abc_content, period, composer, instrumentation):
     if not all([period, composer, instrumentation]):
@@ -65,24 +93,10 @@ def save_and_convert(abc_content, period, composer, instrumentation):
     filename_base = f"{timestamp}_{prompt_str}"
     
     abc_filename = f"{filename_base}.abc"
-    with open(abc_filename, "w", encoding="utf-8") as f:
-        f.write(abc_content)
-
     xml_filename = f"{filename_base}.xml"
-    try:
-        subprocess.run(
-            ["python", "abc2xml.py", '-o', '.', abc_filename, ],
-            check=True,
-            capture_output=True,
-            text=True
-        )
-    except subprocess.CalledProcessError as e:
-        error_msg = f"Conversion failed: {e.stderr}" if e.stderr else "Unknown error"
-        raise gr.Error(f"ABC to XML conversion failed: {error_msg}. Please try to generate another composition.")
+    save_abc_xml_file(abc_filename, abc_content)
     
     return f"Saved successfully: {abc_filename} -> {xml_filename}"
-
-
 
 def generate_music(period, composer, instrumentation):
     if (period, composer, instrumentation) not in valid_combinations:
@@ -167,6 +181,8 @@ with gr.Blocks() as demo:
             
             with gr.Row():
                 save_btn = gr.Button("💾 Save as ABC & XML files", variant="secondary")
+                dl_xml_btn = gr.Button("💾 Download .xml file", variant="secondary")
+                dl_xml_btn_hidden = gr.DownloadButton(visible=False, elem_id="download_btn_hidden")
             
             save_status = gr.Textbox(
                 label="Save Status",
@@ -196,6 +212,15 @@ with gr.Blocks() as demo:
         save_and_convert,
         inputs=[final_output, period_dd, composer_dd, instrument_dd],
         outputs=[save_status]
+    )
+
+    dl_xml_btn.click(
+        save_and_download,
+        inputs=[final_output, period_dd, composer_dd, instrument_dd],
+        outputs=[save_status, dl_xml_btn_hidden]
+    ).then(
+        fn=None, inputs=None, outputs=None,
+        js="() => document.querySelector('#download_btn_hidden').click()"
     )
 
 
@@ -231,6 +256,7 @@ demo.css = css
 if __name__ == "__main__":
 
     demo.launch(
-        server_name="0.0.0.0",
+        #server_name="0.0.0.0",
+        server_name="127.0.0.1",
         server_port=7861
     )
