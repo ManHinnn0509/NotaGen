@@ -1,3 +1,4 @@
+DES_FOLDER = ''
 ORI_FOLDER = ''  # Replace with the path to your folder containing standard ABC notation files
 INTERLEAVED_FOLDER = ''   # Output interleaved ABC notation files to this folder
 AUGMENTED_FOLDER = ''   # Output key-augmented and rest-omitted ABC notation files to this folder
@@ -144,9 +145,11 @@ def abc_preprocess_pipeline(abc_path):
 if __name__ == '__main__':
     
     data = []
-    file_list = os.listdir(ORI_FOLDER)
+    #file_list = os.listdir(ORI_FOLDER)
+    file_list = os.listdir(DES_FOLDER)
     for file in tqdm(file_list):
-        ori_abc_path = os.path.join(ORI_FOLDER, file)
+        #ori_abc_path = os.path.join(ORI_FOLDER, file)
+        ori_abc_path = os.path.join(DES_FOLDER, file)
         try:
             abc_name, ori_key = abc_preprocess_pipeline(ori_abc_path)
         except:
