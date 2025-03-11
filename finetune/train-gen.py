@@ -271,7 +271,7 @@ if __name__ == "__main__":
         for line in f:
             data = json.loads(line)
             data['path'] = p + data['path']
-            eval_files.append(json.loads(data))
+            eval_files.append(data)
 
     if len(eval_files) == 0:
         train_files, eval_files = split_data(train_files)
