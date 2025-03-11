@@ -19,6 +19,9 @@ try:    import xml.etree.cElementTree as E
 except: import xml.etree.ElementTree as E
 import os, sys, types, re, math
 
+import traceback
+sys.stdout.reconfigure(encoding='utf-8')
+
 VERSION = 143
 
 python3 = sys.version_info.major > 2
@@ -1605,5 +1608,7 @@ if __name__ == '__main__':
         try:
             psr.parse (fobj)    # parse file fobj and write abc to <fnm>.abc
         except:
-            etype, value, traceback = sys.exc_info ()   # works in python 2 & 3
+            etype, value, tb = sys.exc_info ()   # works in python 2 & 3
             info ('** %s occurred: %s in %s' % (etype, value, fnmext), 0)
+            info('##############################', 0)
+            info(traceback.format_exc(), 0)
