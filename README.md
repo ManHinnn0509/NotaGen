@@ -56,6 +56,8 @@ We provide pre-trained weights of different scales:
 |  [NotaGen-medium](https://huggingface.co/ElectricAlexis/NotaGen/blob/main/weights_notagen_pretrain_p_size_16_p_length_2048_p_layers_16_c_layers_3_h_size_1024_lr_0.0001_batch_4.pth) | 244M   |  16   |  3     |  1024  |  2048  |
 |  [NotaGen-large](https://huggingface.co/ElectricAlexis/NotaGen/blob/main/weights_notagen_pretrain_p_size_16_p_length_1024_p_layers_20_c_layers_6_h_size_1280_lr_0.0001_batch_4.pth)  | 516M   |  20   |  6     |  1280  |  1024  |
 
+**Notice**: The pre-trained weights cannot be used for conditional generation based on 'period-composer-instrumentation'.
+
 ### Fine-tuning
 
 We fine-tuned NotaGen-large on a corpus of approximately 9k classical pieces. You can download the weights [here](https://huggingface.co/ElectricAlexis/NotaGen/blob/main/weights_notagen_pretrain-finetune_p_size_16_p_length_1024_p_layers_c_layers_6_20_h_size_1280_lr_1e-05_batch_1.pth).
@@ -73,7 +75,7 @@ Inspired by Deepseek-R1, we further optimized the training procedures of NotaGen
 - After RL, we utilized the resulting checkpoint to gather a new set of post-training data. Starting from the pre-trained checkpoint, we conducted another round of post-training, fine-tuning, and reinforcement learning.
 
 
-## 🎹 Gradio Demo
+## 🎹 Demo
 
 ### Local Gradio Demo
 
@@ -83,11 +85,19 @@ We developed a local Gradio demo for NotaGen-X. You can input **"Period-Composer
   <img src="gradio/illustration.png" alt="NotaGen Gradio Demo">
 </p>
 
-Deploying NotaGen-X inference locally requires at least 24GB of GPU memory. For implementation details, please view [gradio/README.md](https://github.com/ElectricAlexis/NotaGen/blob/main/gradio/README.md). We are also working on developing an online demo.
+Deploying NotaGen-X inference locally may require 8GB of GPU memory. For implementation details, please view [gradio/README.md](https://github.com/ElectricAlexis/NotaGen/blob/main/gradio/README.md). We are also working on developing an online demo.
 
 ### Online Colab Notebook
 
-Thanks for [@deeplearn-art](https://github.com/deeplearn-art/NotaGen)'s contribution of a [Google Colab notebook for NotaGen](https://colab.research.google.com/drive/1yJA1wG0fiwNeehdQxAUw56i4bTXzoVVv?usp=sharing)! You can run it and access to a Gradio public link to play with this demo.
+Thanks for [@deeplearn-art](https://github.com/deeplearn-art/NotaGen)'s contribution of a [Google Colab notebook for NotaGen](https://colab.research.google.com/drive/1yJA1wG0fiwNeehdQxAUw56i4bTXzoVVv?usp=sharing)! You can run it and access to a Gradio public link to play with this demo. 🤩
+
+### ComfyUI
+
+Thanks for [@billwuhao](https://github.com/billwuhao/ComfyUI_NotaGen)'s contribution of [a ComfyUI node for NotaGen](https://github.com/billwuhao/ComfyUI_NotaGen)! Please visit the [repository page](https://github.com/billwuhao/ComfyUI_NotaGen) for more information. 🤩
+
+<p align="center">
+  <img src="https://github.com/billwuhao/ComfyUI_NotaGen/blob/master/images/2025-03-10_06-24-03.png" alt="NotaGen ComfyUI">
+</p>
 
 
 ## 🛠️ Data Pre-processing & Post-processing

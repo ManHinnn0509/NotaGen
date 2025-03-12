@@ -241,6 +241,14 @@ def eval_epoch():
         iter_idx += 1
     return total_eval_loss / (iter_idx-1)
 
+# Copied from clamp2/utils & clamp2/config.py
+def split_data(data, eval_ratio=0.01):
+    random.shuffle(data)
+    split_idx = int(len(data)*eval_ratio)
+    eval_set = data[:split_idx]
+    train_set = data[split_idx:]
+    return train_set, eval_set
+
 # train and eval
 if __name__ == "__main__":
     
