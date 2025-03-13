@@ -152,9 +152,11 @@ if __name__ == '__main__':
         except:
             print(ori_abc_path, 'failed to pre-process.')
             continue
-
+        
+        rel_path = os.path.join(AUGMENTED_FOLDER, abc_name)
+        abs_path = os.path.abspath(rel_path)
         data.append({
-            'path': os.path.join(AUGMENTED_FOLDER, abc_name),
+            'path': abs_path,
             'key': ori_key
         })
 

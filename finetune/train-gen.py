@@ -259,26 +259,18 @@ if __name__ == "__main__":
                    name=WANDB_NAME)
     
     # load data
-    parts = DATA_TRAIN_INDEX_PATH.split("/")
-    parts.pop(-1)
-    p = '/'.join(parts) + '/'
     with open(DATA_TRAIN_INDEX_PATH, "r", encoding="utf-8") as f:
         print("Loading Data...")
         train_files = []
         for line in f:
             data = json.loads(line)
-            data['path'] = p + data['path']
             train_files.append(data)
 
-    parts = DATA_EVAL_INDEX_PATH.split("/")
-    parts.pop(-1)
-    p = '/'.join(parts) + '/'
     with open(DATA_EVAL_INDEX_PATH, "r", encoding="utf-8") as f:
         print("Loading Data...")
         eval_files = []
         for line in f:
             data = json.loads(line)
-            data['path'] = p + data['path']
             eval_files.append(data)
 
     if len(eval_files) == 0:
