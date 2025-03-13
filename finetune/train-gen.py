@@ -19,6 +19,8 @@ import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.utils.data.distributed import DistributedSampler
 
+import weakref
+
 Index2Key = {index: key for key, index in Key2index.items() if index not in [1, 11]}
 Mode2Key = {mode: key for key, mode_list in Key2Mode.items() for mode in mode_list }
 
