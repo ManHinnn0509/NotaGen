@@ -1,5 +1,11 @@
+# ===== Custom =====
+
+# Modeels
 *.pth
+logs_*.txt
+
 .gradio/
+.env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

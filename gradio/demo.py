@@ -8,11 +8,17 @@ import datetime
 import subprocess
 import os
 
+from config import SHARE, SERVER_NAME, OUTPUT_DIR
+
 # Predefined valid combinations set
 with open('prompts.txt', 'r') as f:
     prompts = f.readlines()
 valid_combinations = set()
 for prompt in prompts:
+    prompt = prompt.replace("\n", "").replace("\r", "")
+    if (prompt.startswith("#") or prompt == ''):
+        continue
+
     prompt = prompt.strip()
     parts = prompt.split('_')
     valid_combinations.add((parts[0], parts[1], parts[2]))
@@ -56,12 +62,15 @@ class RealtimeStream(TextIOBase):
         return len(text)
 
 def save_abc_xml_file(abc_filename: str, abc_content: str):
-    with open(abc_filename, "w", encoding="utf-8") as f:
+    if not (os.path.exists(OUTPUT_DIR)):
+        os.makedirs(OUTPUT_DIR)
+    
+    with open(OUTPUT_DIR + abc_filename, "w", encoding="utf-8") as f:
         f.write(abc_content)
 
     try:
         subprocess.run(
-            ["python", "abc2xml.py", '-o', '.', abc_filename,],
+            ["python", "abc2xml.py", '-o', '.', OUTPUT_DIR + abc_filename,],
             check=True,
             capture_output=True,
             text=True
@@ -82,7 +91,7 @@ def save_and_download(abc_content, period, composer, instrumentation):
     xml_filename = f"{filename_base}.xml"
     save_abc_xml_file(abc_filename, abc_content)
 
-    return f"Downloading {xml_filename}", xml_filename
+    return f"Downloading {xml_filename}", OUTPUT_DIR + xml_filename
 
 def save_and_convert(abc_content, period, composer, instrumentation):
     if not all([period, composer, instrumentation]):
@@ -181,7 +190,9 @@ with gr.Blocks() as demo:
             
             with gr.Row():
                 save_btn = gr.Button("💾 Save as ABC & XML files", variant="secondary")
-                dl_xml_btn = gr.Button("💾 Download .xml file", variant="secondary")
+            
+            with gr.Row():
+                dl_xml_btn = gr.Button("💾 Download .xml file (Import to MuseScore directly)", variant="secondary")
                 dl_xml_btn_hidden = gr.DownloadButton(visible=False, elem_id="download_btn_hidden")
             
             save_status = gr.Textbox(
@@ -256,8 +267,7 @@ demo.css = css
 if __name__ == "__main__":
 
     demo.launch(
-        #server_name="0.0.0.0",
-        server_name="127.0.0.1",
+        server_name=SERVER_NAME,
         server_port=7861,
-        #share=True
+        share=SHARE
     )

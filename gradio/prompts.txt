@@ -110,3 +110,6 @@ Romantic_Viardot, Pauline_Art Song
 Romantic_Warlock, Peter_Art Song
 Romantic_Wolf, Hugo_Art Song
 Romantic_Zumsteeg, Emilie_Art Song
+
+# Custom
+Romantic_Alkan, Charles-Valentin_Keyboard

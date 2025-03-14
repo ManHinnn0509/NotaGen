@@ -6,3 +6,4 @@ samplings==0.1.7
 pyparsing==3.2.1
 gradio==5.17.1
 tqdm==4.67.1
+python-dotenv==1.0.1
