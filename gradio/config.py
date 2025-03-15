@@ -13,7 +13,9 @@ from pth_config import SMALL, MEDIUM, LARGE
 # Gradio
 SERVER_NAME = '127.0.0.1'
 SHARE = False
-OUTPUT_DIR = './output/'
+
+# Keep this as empty for now cause download doesn't work if it's not empty
+OUTPUT_DIR = ''
 
 # Model
 __MODEL = LARGE

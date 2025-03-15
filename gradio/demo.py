@@ -62,8 +62,9 @@ class RealtimeStream(TextIOBase):
         return len(text)
 
 def save_abc_xml_file(abc_filename: str, abc_content: str):
-    if not (os.path.exists(OUTPUT_DIR)):
-        os.makedirs(OUTPUT_DIR)
+    if (OUTPUT_DIR != ''):
+        if not (os.path.exists(OUTPUT_DIR)):
+            os.makedirs(OUTPUT_DIR)
     
     with open(OUTPUT_DIR + abc_filename, "w", encoding="utf-8") as f:
         f.write(abc_content)
